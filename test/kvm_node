@@ -1,0 +1,14 @@
+# 启动虚拟机
+virt-install 
+	--name node 
+	--hvm 
+	--ram 1024 
+	--vcpus 1
+        --disk path=/home/kvm/test/node.img,size=10
+        --network network:default
+	--accelerate
+	--vnc   
+        --vncport=5911 
+	--cdrom /home/kvm/iso/ubuntu-14.04.4-server-amd64.iso
+	-d
+

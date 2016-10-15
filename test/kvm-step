@@ -1,0 +1,41 @@
+# 需要root权限
+apt-get install qemu-kvm libvirt-bin virt-manager bridge-utils
+
+# 创建目录
+kvm -|
+     |- iso     # 存放iso
+     |- test    # 存放虚拟机的硬盘
+
+# 在test目录下创建一个虚拟硬盘
+qemu-img create -f qcow2 disk.img 10G
+
+# 下载iso，如果速度慢，到window下面去下载
+wget http://releases.ubuntu.com/trusty/ubuntu-14.04.4-server-amd64.iso
+
+# 启动虚拟机
+virt-install \
+        --name ubuntutest --hvm --ram 1024 --vcpus 1    \
+        --disk path=/home/kvm/test/disk.img,size=10     \
+        --network network:default --accelerate  --vnc   \
+        --vncport=5911 --cdrom /home/kvm/iso/ubuntu-14.04.4-server-amd64.iso -d
+
+[参数说明]
+--name          虚拟机名称
+--hvm           使用全虚拟化（与para-irtualization向对），不支持xen hypervisor
+--ram           虚拟机内存大小
+--vcpus         虚拟机虚拟CPU个数
+--disk          虚拟机使用的磁盘（文件）路径
+--network       网络设置，使用默认设置即可
+--vnc           设置连接桌面环境的vnc端口，本例是5911
+--cdrom         设置光驱获取虚拟光驱文件的路径 
+-d              指示从光驱启动（-c 指示从硬盘启动）
+
+# 差看虚拟机状态
+virsh list --all
+
+# 启动虚拟机
+virsh start VMNAME
+
+# 修改虚拟机配置
+vi /etc/libvirt/qemu/VMNAME.xml
+

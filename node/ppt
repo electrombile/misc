@@ -1,0 +1,9 @@
+# create hard disk
+qemu-img create -f qcow2 node.img 8G
+
+#qemu-system-x86_64 -enable-kvm -name node  -m 2048 -hda node.img -cdrom /home/kvm/iso/ubuntu-14.04.4-server-amd64.iso -boot d -vnc :19
+# 不加-vnc :19，会直接跳安装窗口来
+qemu-system-x86_64 -enable-kvm -name node  -m 2048 -hda node.img -cdrom /home/kvm/iso/ubuntu-14.04.4-server-amd64.iso -boot d 
+
+# start vm
+qemu-system-x86_64 -m 2048 -smp 4 -hda /home/kvm/node/node.qcow2
